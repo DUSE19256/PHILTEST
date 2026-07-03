@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>马哲纯度测试</title>
+    <style>
+        :root {
+            --bg: #faf8f5;
+            --card-bg: #ffffff;
+            --text: #2c1a0e;
+            --subtext: #6b4e3d;
+            --border: #e5dcd3;
+            --shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+            --primary: #a83232;
+            --primary-light: #fdf2f2;
+            --primary-dark: #7a1f1f;
+            --gold: #b8860b;
+            --gold-light: #fdf8ed;
+            --orange: #c0551a;
+            --orange-light: #fef6f1;
+            --plum: #7b2040;
+            --plum-light: #fdf5f8;
+            --radius: 12px;
+            --transition: 0.18s ease;
+            --font: 'Segoe UI', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 12px;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 22px 0 10px;
+        }
+        .header .icon {
+            font-size: 2.6rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .header h1 {
+            font-size: clamp(1.3rem, 3vw, 1.7rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #2c1a0e;
+            margin-bottom: 4px;
+        }
+        .header .subtitle {
+            font-size: 0.85rem;
+            color: var(--subtext);
+            font-weight: 400;
+        }
+        .header .badge-row {
+            margin-top: 8px;
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .badge {
+            display: inline-block;
+            background: #f5ede0;
+            color: #8b6914;
+            font-size: 0.74rem;
+            padding: 3px 11px;
+            border-radius: 16px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+        .badge.red {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        /* Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: clamp(14px, 2.5vw, 22px);
+            margin-bottom: 14px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        /* Section header */
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 10px 14px;
+            margin: 6px 0 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.02em;
+        }
+        .section-title .emoji {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .sec1 {
+            background: #fef6f1;
+            color: #8b3a1a;
+            border-left: 4px solid #c0551a;
+        }
+        .sec2 {
+            background: #fdf8ed;
+            color: #7a5c10;
+            border-left: 4px solid #b8860b;
+        }
+        .sec3 {
+            background: #fdf5f8;
+            color: #6b1a35;
+            border-left: 4px solid #7b2040;
+        }
+        .sec4 {
+            background: #fdf2f2;
+            color: #7a1f1f;
+            border-left: 4px solid #a83232;
+        }
+
+        /* Question item */
+        .question-item {
+            margin-bottom: 14px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3ede6;
+        }
+        .question-item:last-child {
+            border-bottom: none;
+        }
+        .question-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #3d2b1a;
+            line-height: 1.55;
+        }
+        .question-num {
+            display: inline-block;
+            background: #f5ede0;
+            color: #8b6914;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-right: 6px;
+            font-weight: 600;
+            flex-shrink: 0;
+            vertical-align: middle;
+        }
+        .options-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .options-row .opt-label {
+            flex: 1;
+            min-width: 44px;
+            max-width: 72px;
+            text-align: center;
+            cursor: pointer;
+            padding: 8px 4px;
+            border-radius: 8px;
+            border: 1.5px solid #e0d7cc;
+            background: #fdfcf9;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #8b7b6b;
+            transition: var(--transition);
+            user-select: none;
+            position: relative;
+        }
+        .options-row .opt-label:hover {
+            border-color: #c4a888;
+            background: #fdf8f2;
+            color: #5c3d1e;
+        }
+        .options-row input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .options-row input[type="radio"]:checked+.opt-inner {
+            color: #fff;
+        }
+        .options-row input[type="radio"]:checked+.opt-inner {
+            background: var(--primary);
+            border-radius: 6px;
+            padding: 4px 2px;
+            margin: -4px -2px;
+            display: block;
+        }
+        .opt-inner {
+            display: block;
+            transition: var(--transition);
+            border-radius: 6px;
+        }
+        /* Highlight selected option */
+        .options-row:has(input:checked) .opt-label:has(input:checked) {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(168, 50, 50, 0.25);
+        }
+        .opt-hint {
+            font-size: 0.6rem;
+            color: #c4b8a8;
+            display: block;
+            margin-top: 1px;
+        }
+        .options-row:has(input:checked) .opt-label:has(input:checked) .opt-hint {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* Submit */
+        .submit-area {
+            text-align: center;
+            padding: 16px 0 6px;
+        }
+        .submit-btn {
+            display: inline-block;
+            padding: 13px 36px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 26px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            transition: var(--transition);
+            font-family: var(--font);
+            box-shadow: 0 3px 14px rgba(168, 50, 50, 0.2);
+        }
+        .submit-btn:hover {
+            background: #8f2a2a;
+            box-shadow: 0 5px 20px rgba(168, 50, 50, 0.3);
+            transform: translateY(-1px);
+        }
+        .submit-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 2px 8px rgba(168, 50, 50, 0.2);
+        }
+        .submit-btn:disabled {
+            background: #c9b8a8;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .submit-hint {
+            font-size: 0.75rem;
+            color: #b8a898;
+            margin-top: 6px;
+        }
+
+        /* Result area */
+        #result-area {
+            display: none;
+            scroll-margin-top: 20px;
+        }
+        .result-header {
+            text-align: center;
+            padding: 10px 0 6px;
+        }
+        .purity-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 22px;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+        .purity-badge.l1 {
+            background: #fdf2f2;
+            color: #7a1f1f;
+            border: 2px solid #a83232;
+        }
+        .purity-badge.l2 {
+            background: #fef6f1;
+            color: #8b3a1a;
+            border: 2px solid #c0551a;
+        }
+        .purity-badge.l3 {
+            background: #fdf8ed;
+            color: #7a5c10;
+            border: 2px solid #b8860b;
+        }
+        .purity-badge.l4 {
+            background: #f8f5f0;
+            color: #6b5e4a;
+            border: 2px solid #b8a898;
+        }
+        .total-score {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #2c1a0e;
+            font-family: 'SF Mono', 'Consolas', 'Menlo', monospace;
+            letter-spacing: 0.04em;
+        }
+        .total-score .denom {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #b8a898;
+        }
+        .score-remark {
+            font-size: 0.8rem;
+            color: #a09080;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        /* Radar chart container */
+        .radar-container {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .radar-container canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Analysis blocks */
+        .analysis-block {
+            margin: 12px 0;
+            padding: 14px 16px;
+            border-radius: 10px;
+            background: #fdfcf9;
+            border: 1px solid #efe8dd;
+        }
+        .analysis-block h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #4a3020;
+            letter-spacing: 0.02em;
+        }
+        .analysis-block p {
+            font-size: 0.82rem;
+            color: #5c4530;
+            line-height: 1.6;
+        }
+        .analysis-block .quote {
+            font-style: italic;
+            color: #8b5e3c;
+            border-left: 3px solid #c4a888;
+            padding-left: 10px;
+            margin: 8px 0;
+            font-size: 0.8rem;
+        }
+        .analysis-block .quote .attr {
+            font-style: normal;
+            font-size: 0.7rem;
+            color: #b8a090;
+            display: block;
+            margin-top: 2px;
+        }
+        .recommend {
+            background: #fdf8f2;
+            border: 1px solid #f0e0c8;
+        }
+        .recommend h4 {
+            color: #8b6914;
+        }
+        .portrait-tag {
+            display: inline-block;
+            background: #f5ede0;
+            color: #6b4e2d;
+            font-size: 0.76rem;
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            margin-right: 6px;
+        }
+
+        /* Retest button */
+        .retest-btn {
+            display: inline-block;
+            padding: 10px 26px;
+            background: #fff;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+            border-radius: 22px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+            font-family: var(--font);
+            margin-top: 8px;
+        }
+        .retest-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3d2b1a;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 22px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            font-family: var(--font);
+        }
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .options-row .opt-label {
+                font-size: 0.72rem;
+                padding: 7px 2px;
+                min-width: 36px;
+                max-width: 58px;
+            }
+            .question-text {
+                font-size: 0.83rem;
+            }
+            .total-score {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 0.9rem;
+                padding: 8px 10px;
+            }
+        }
+        @media (max-width: 370px) {
+            .options-row {
+                gap: 3px;
+            }
+            .options-row .opt-label {
+                font-size: 0.68rem;
+                padding: 6px 1px;
+                min-width: 30px;
+                max-width: 50px;
+                border-radius: 6px;
+            }
+            .opt-hint {
+                font-size: 0.55rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <span class="icon">📖</span>
+            <h1>马哲纯度测试</h1>
+            <p class="subtitle">21道题 · 四个板块 · 探索你的唯物辩证法倾向</p>
+            <div class="badge-row">
+                <span class="badge red">唯物史观</span>
+                <span class="badge">认识论</span>
+                <span class="badge">人的本质</span>
+                <span class="badge red">政治立场</span>
+            </div>
+        </div>
+
+        <!-- Quiz Card -->
+        <div class="card" id="quiz-card">
+            <p style="text-align:center;font-size:0.8rem;color:#b8a090;margin-bottom:8px;">
+                请对以下陈述逐一表态：1=完全不同意 · 2=比较不同意 · 3=中立/不确定 · 4=比较同意 · 5=完全同意
+            </p>
+
+            <!-- 板块一：唯物史观与辩证法 -->
+            <div class="section-title sec1"><span class="emoji">🧱</span>第一板块：唯物史观与辩证法</div>
+            <div id="questions-container"></div>
+
+            <!-- 板块二：认识论与科学观 -->
+            <div class="section-title sec2"><span class="emoji">🔭</span>第二板块：认识论与科学观</div>
+            <div id="questions-container-2"></div>
+
+            <!-- 板块三：人的本质与伦理观 -->
+            <div class="section-title sec3"><span class="emoji">👤</span>第三板块：人的本质与伦理观</div>
+            <div id="questions-container-3"></div>
+
+            <!-- 板块四：政治立场与社会理想 -->
+            <div class="section-title sec4"><span class="emoji">🚩</span>第四板块：政治立场与社会理想</div>
+            <div id="questions-container-4"></div>
+
+            <!-- Submit -->
+            <div class="submit-area">
+                <button class="submit-btn" id="submit-btn" onclick="calculateResult()">🔍 查看我的马哲纯度</button>
+                <p class="submit-hint" id="submit-hint">请完成全部21题后点击</p>
+            </div>
+        </div>
+
+        <!-- Result Area -->
+        <div class="card" id="result-area">
+            <div class="result-header">
+                <div class="purity-badge" id="purity-badge"></div>
+                <div style="margin:4px 0;">
+                    <span class="total-score" id="total-score-display"></span>
+                </div>
+                <p class="score-remark" id="score-remark"></p>
+            </div>
+            <div class="radar-container">
+                <canvas id="radar-canvas" width="400" height="400"></canvas>
+            </div>
+            <div id="analysis-content"></div>
+            <div style="text-align:center;">
+                <button class="retest-btn" onclick="retest()">🔄 重新测试</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            // ============ 题目数据 ============
+            const allQuestions = [
+                // 板块一：唯物史观与辩证法 (题1-5)
+                {
+                    id: 1,
+                    text: '现有社会的经济、政治、文化等各方面状况的形成都有其历史必然性。',
+                    section: 1
+                },
+                {
+                    id: 2,
+                    text: '人们诞生于特定的社会历史环境中，其思想、行为、处境都会受已有物质条件制约。',
+                    section: 1
+                },
+                {
+                    id: 3,
+                    text: '人类可以在认识规律的基础上，通过利用和改变规律起作用的条件来影响历史进程。',
+                    section: 1
+                },
+                {
+                    id: 4,
+                    text: '矛盾是事物发展的源泉和动力，不利于人民群众的社会制度会孕育出推翻自身的力量。',
+                    section: 1
+                },
+                {
+                    id: 5,
+                    text: '人的思维具备着一定的超越性，能通过社会实践改造社会，但这一过程又受客观世界的约束。',
+                    section: 1
+                },
+                // 板块二：认识论与科学观 (题6-11)
+                {
+                    id: 6,
+                    text: '很多常识性的东西也不一定是正确的，它们都是历史的产物，因此我们也需要用历史的眼光去看待它们。',
+                    section: 2
+                },
+                {
+                    id: 7,
+                    text: '人的意识不能完全还原为可量化的物理指标，科学方法在研究意识时有其局限性，尤其是在价值、意义等主观体验层面。',
+                    section: 2
+                },
+                {
+                    id: 8,
+                    text: '科学实证主义将社会历史当作一个静止的横截面去观察，往往难以发掘事物现象背后的真正成因。',
+                    section: 2
+                },
+                {
+                    id: 9,
+                    text: '单纯的数据统计往往掩盖了背后的社会关系和阶级差异。',
+                    section: 2
+                },
+                {
+                    id: 10,
+                    text: '一切科学技术的发展都会因其所处时代的不同展现出不同的特征，这反映了社会现实的需要，它们在将来也都存在被打破的可能。',
+                    section: 2
+                },
+                {
+                    id: 11,
+                    text: '判断一个理论是否正确，不能只依靠逻辑自洽、权威认可或单纯的历史经验。事实上，几乎不可能存在永恒正确的理论，它们最终都要通过长期的社会实践来检验与修正。',
+                    section: 2
+                },
+                // 板块三：人的本质与伦理观 (题12-18)
+                {
+                    id: 12,
+                    text: '人是社会历史中的人，是发展变化着的人，没有任何固定的本质可言。',
+                    section: 3
+                },
+                {
+                    id: 13,
+                    text: '随着人类社会的发展，人的社会属性已经远远超过了自然生物属性对人的影响，对人起着决定性的作用。',
+                    section: 3
+                },
+                {
+                    id: 14,
+                    text: '不存在真正孤立的个人，个人必须在社会中在集体中才能真正地实现自己的价值。',
+                    section: 3
+                },
+                {
+                    id: 15,
+                    text: '个人从属于集体，集体也应该是服务于每个个人的，二者在利益上不存在不可调和的冲突，只有这样的集体才是真正的集体。',
+                    section: 3
+                },
+                {
+                    id: 16,
+                    text: '一部分人的幸福是不可能成立的，以牺牲他人幸福换来的幸福不是真正的属于人的幸福。',
+                    section: 3
+                },
+                {
+                    id: 17,
+                    text: '对现有事物的批判，应当立足于推动社会的整体进步而非个人情绪的发泄。',
+                    section: 3
+                },
+                {
+                    id: 18,
+                    text: '在评价一个人的错误行为时，社会环境因素比个人道德品质更需要被优先考虑。',
+                    section: 3
+                },
+                // 板块四：政治立场与社会理想 (题19-21)
+                {
+                    id: 19,
+                    text: '妇女、黑人等被歧视种族乃至性少数群体的解放和无产阶级的解放是统一的。',
+                    section: 4
+                },
+                {
+                    id: 20,
+                    text: '国际主义比民族主义更优越。',
+                    section: 4
+                },
+                {
+                    id: 21,
+                    text: '从长远的历史维度来看，国家作为一种阶级统治工具，最终会随着阶级的消失而自然消亡。',
+                    section: 4
+                },
+            ];
+
+            const sectionNames = ['', '唯物史观与辩证法', '认识论与科学观', '人的本质与伦理观', '政治立场与社会理想'];
+            const sectionMaxScores = [0, 25, 30, 35, 15]; // 板块满分：题数×5
+            const sectionShortNames = ['', '唯物史观', '认识论', '人的本质', '政治立场'];
+
+            // ============ 渲染题目 ============
+            const containers = {
+                1: document.getElementById('questions-container'),
+                2: document.getElementById('questions-container-2'),
+                3: document.getElementById('questions-container-3'),
+                4: document.getElementById('questions-container-4'),
+            };
+
+            allQuestions.forEach(q => {
+                const container = containers[q.section];
+                const div = document.createElement('div');
+                div.className = 'question-item';
+                div.id = 'q-item-' + q.id;
+                let optionsHTML = '';
+                const optLabels = ['完全不同意', '比较不同意', '中立/不确定', '比较同意', '完全同意'];
+                for (let v = 1; v <= 5; v++) {
+                    optionsHTML += `
+                <label class="opt-label" title="${optLabels[v-1]}">
+                  <input type="radio" name="q${q.id}" value="${v}" aria-label="${optLabels[v-1]}">
+                  <span class="opt-inner">${v}</span>
+                  <span class="opt-hint">${v===1?'反对':v===5?'赞同':''}</span>
+                </label>`;
+                }
+                div.innerHTML = `
+              <div class="question-text">
+                <span class="question-num">${q.id}</span>${q.text}
+              </div>
+              <div class="options-row">${optionsHTML}</div>
+            `;
+                container.appendChild(div);
+            });
+
+            // ============ 结果计算 ============
+            function getScores() {
+                const sectionScores = { 1: 0, 2: 0, 3: 0, 4: 0 };
+                let totalScore = 0;
+                let allAnswered = true;
+                let firstUnanswered = null;
+                allQuestions.forEach(q => {
+                    const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+                    if (selected) {
+                        const val = parseInt(selected.value);
+                        sectionScores[q.section] += val;
+                        totalScore += val;
+                    } else {
+                        allAnswered = false;
+                        if (!firstUnanswered) firstUnanswered = q.id;
+                    }
+                });
+                return { sectionScores, totalScore, allAnswered, firstUnanswered };
+            }
+
+            function getSectionRates(sectionScores) {
+                const rates = {};
+                for (let s = 1; s <= 4; s++) {
+                    rates[s] = sectionScores[s] / sectionMaxScores[s];
+                }
+                return rates;
+            }
+
+            function getPurityLevel(totalScore) {
+                if (totalScore >= 85) return { level: 1, name: '自觉的辩证唯物主义者', cls: 'l1' };
+                if (totalScore >= 60) return { level: 2, name: '自发的唯物主义倾向者', cls: 'l2' };
+                if (totalScore >= 35) return { level: 3, name: '朴素的实在论者', cls: 'l3' };
+                return { level: 4, name: '待启蒙的形而上学倾向', cls: 'l4' };
+            }
+
+            function getPortrait(totalScore, rates) {
+                // 1. 纯血战士
+                if (totalScore >= 85 && rates[1] >= 0.70 && rates[2] >= 0.70 && rates[3] >= 0.70 && rates[4] >= 0.70) {
+                    return {
+                        name: '纯血战士',
+                        desc: '你几乎完整复现了从费尔巴哈到马克思的思想进路。四个板块均衡且坚定，唯物史观、辩证法、认识论与政治立场高度统一。',
+                        quote: '哲学家们只是用不同的方式解释世界，而问题在于改变世界。',
+                        quoteAttr: '——马克思《关于费尔巴哈的提纲》',
+                    };
+                }
+                // 2. 书斋里的唯物主义者
+                if (rates[1] >= 0.65 && rates[2] >= 0.65 && rates[4] < 0.55) {
+                    return {
+                        name: '书斋里的唯物主义者',
+                        desc: '你认同唯物史观的分析框架，对认识论也有深入思考，但在政治实践维度相对谨慎。理论功底扎实，行动层面尚有保留。',
+                        quote: '全部社会生活在本质上是实践的。',
+                        quoteAttr: '——马克思《关于费尔巴哈的提纲》',
+                    };
+                }
+                // 3. 伦理社会主义者
+                if (rates[3] >= 0.70 && rates[1] >= 0.40 && rates[1] <= 0.70) {
+                    return {
+                        name: '伦理社会主义者',
+                        desc: '你从人道主义和社会关系的角度接近了马克思，对人的本质有深刻理解。但唯物辩证法的根基还可进一步夯实。',
+                        quote: '人的本质不是单个人所固有的抽象物，在其现实性上，它是一切社会关系的总和。',
+                        quoteAttr: '——马克思《关于费尔巴哈的提纲》',
+                    };
+                }
+                // 4. 科学主义的批判者
+                if (rates[2] >= 0.70 && totalScore < 80) {
+                    return {
+                        name: '科学主义的批判者',
+                        desc: '你对实证主义和唯科学论有清醒的批判意识，认识论板块尤为突出。整体上对马哲框架有选择性认同，尚需系统化。',
+                        quote: '辩证法在对现存事物的肯定的理解中同时包含对现存事物的否定的理解。',
+                        quoteAttr: '——马克思《资本论》',
+                    };
+                }
+                // 5. 自由的怀疑论者
+                if (totalScore < 55 && (rates[1] >= 0.55 || rates[2] >= 0.55 || rates[3] >= 0.55 || rates[4] >= 0.55)) {
+                    return {
+                        name: '自由的怀疑论者',
+                        desc: '你对主流叙事保持着可贵的反思精神，在某些板块有独到见解。马哲的某些洞见或许值得你重新审视——批判本身也是通向真理的路径。',
+                        quote: '批判的武器当然不能代替武器的批判。',
+                        quoteAttr: '——马克思《黑格尔法哲学批判》导言',
+                    };
+                }
+                return null; // 无特殊画像
+            }
+
+            function getRecommendation(rates) {
+                let minSection = 1;
+                let minRate = rates[1];
+                for (let s = 2; s <= 4; s++) {
+                    if (rates[s] < minRate) {
+                        minRate = rates[s];
+                        minSection = s;
+                    }
+                }
+                const recs = {
+                    1: { title: '《政治经济学批判》序言', desc: '这篇短文是马克思唯物史观的经典概括，精炼地阐述了生产力与生产关系、经济基础与上层建筑的辩证关系。' },
+                    2: { title: '《关于费尔巴哈的提纲》', desc: '马克思的"天才萌芽"之作，短短11条提纲，阐明了实践是检验真理的唯一标准这一核心观点。' },
+                    3: { title: '《德意志意识形态》', desc: '马克思和恩格斯系统阐述历史唯物主义的著作，深入探讨了人的本质、社会分工与阶级的形成。' },
+                    4: { title: '《共产党宣言》', desc: '马恩最具影响力的政治文本，阐述了阶级斗争的历史、无产阶级的历史使命以及对未来社会的展望。' },
+                };
+                return recs[minSection] || recs[1];
+            }
+
+            function getQuoteForPurity(level) {
+                const quotes = {
+                    1: { text: '哲学家们只是用不同的方式解释世界，而问题在于改变世界。', attr: '——马克思《关于费尔巴哈的提纲》' },
+                    2: { text: '物质生活的生产方式制约着整个社会生活、政治生活和精神生活的过程。', attr: '——马克思《政治经济学批判》序言' },
+                    3: { text: '意识在任何时候都只能是被意识到了的存在。', attr: '——马克思、恩格斯《德意志意识形态》' },
+                    4: { text: '理论一经掌握群众，也会变成物质力量。', attr: '——马克思《黑格尔法哲学批判》导言' },
+                };
+                return quotes[level] || quotes[3];
+            }
+
+            // ============ 绘制雷达图 ============
+            function drawRadar(rates) {
+                const canvas = document.getElementById('radar-canvas');
+                const ctx = canvas.getContext('2d');
+                const W = canvas.width;
+                const H = canvas.height;
+                const cx = W / 2;
+                const cy = H / 2;
+                const maxRadius = Math.min(cx, cy) - 55;
+                const angles = [-Math.PI / 2, 0, Math.PI / 2, Math.PI]; // 上、右、下、左
+                const labels = sectionShortNames.slice(1); // ['唯物史观','认识论','人的本质','政治立场']
+                const colors = ['#c0551a', '#b8860b', '#7b2040', '#a83232'];
+                const scoreRates = [rates[1], rates[2], rates[3], rates[4]];
+
+                ctx.clearRect(0, 0, W, H);
+
+                // 背景同心多边形
+                const levels = [0.25, 0.5, 0.75, 1.0];
+                const levelColors = ['#f5ede0', '#ebe0d0', '#e0d2be', '#d4c4ac'];
+                for (let li = levels.length - 1; li >= 0; li--) {
+                    ctx.beginPath();
+                    for (let i = 0; i < 4; i++) {
+                        const r = maxRadius * levels[li];
+                        const x = cx + r * Math.cos(angles[i]);
+                        const y = cy + r * Math.sin(angles[i]);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = levelColors[li];
+                    ctx.fill();
+                    ctx.strokeStyle = '#d4c4ac';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([4, 4]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+
+                // 轴线
+                for (let i = 0; i < 4; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.lineTo(cx + maxRadius * Math.cos(angles[i]), cy + maxRadius * Math.sin(angles[i]));
+                    ctx.strokeStyle = '#e0d7cc';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+
+                // 数据多边形
+                ctx.beginPath();
+                for (let i = 0; i < 4; i++) {
+                    const r = maxRadius * scoreRates[i];
+                    const x = cx + r * Math.cos(angles[i]);
+                    const y = cy + r * Math.sin(angles[i]);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(168,50,50,0.15)';
+                ctx.fill();
+                ctx.strokeStyle = '#a83232';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                // 数据点
+                for (let i = 0; i < 4; i++) {
+                    const r = maxRadius * scoreRates[i];
+                    const x = cx + r * Math.cos(angles[i]);
+                    const y = cy + r * Math.sin(angles[i]);
+                    ctx.beginPath();
+                    ctx.arc(x, y, 7, 0, Math.PI * 2);
+                    ctx.fillStyle = colors[i];
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 2.5;
+                    ctx.stroke();
+                    // 百分比标签
+                    const pct = Math.round(scoreRates[i] * 100);
+                    const lblX = cx + (r + 18) * Math.cos(angles[i]);
+                    const lblY = cy + (r + 18) * Math.sin(angles[i]);
+                    ctx.fillStyle = '#3d2b1a';
+                    ctx.font = 'bold 12px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(pct + '%', lblX, lblY);
+                }
+
+                // 轴标签
+                const labelOffsets = [
+                    { dx: 0, dy: -maxRadius - 38, align: 'center', base: 'middle' },
+                    { dx: maxRadius + 38, dy: 0, align: 'left', base: 'middle' },
+                    { dx: 0, dy: maxRadius + 38, align: 'center', base: 'middle' },
+                    { dx: -maxRadius - 38, dy: 0, align: 'right', base: 'middle' },
+                ];
+                for (let i = 0; i < 4; i++) {
+                    const lx = cx + labelOffsets[i].dx;
+                    const ly = cy + labelOffsets[i].dy;
+                    ctx.fillStyle = colors[i];
+                    ctx.font = 'bold 13px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif';
+                    ctx.textAlign = labelOffsets[i].align;
+                    ctx.textBaseline = labelOffsets[i].base;
+                    ctx.fillText(labels[i], lx, ly);
+                    // 小圆点
+                    const dotX = cx + (maxRadius + 10) * Math.cos(angles[i]);
+                    const dotY = cy + (maxRadius + 10) * Math.sin(angles[i]);
+                    ctx.beginPath();
+                    ctx.arc(dotX, dotY, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = colors[i];
+                    ctx.fill();
+                }
+
+                // 中心点
+                ctx.beginPath();
+                ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+                ctx.fillStyle = '#b8a898';
+                ctx.fill();
+            }
+
+            // ============ 主函数 ============
+            function calculateResult() {
+                const { sectionScores, totalScore, allAnswered, firstUnanswered } = getScores();
+                if (!allAnswered) {
+                    showToast('⚠️ 请先完成第 ' + firstUnanswered + ' 题再查看结果');
+                    const el = document.getElementById('q-item-' + firstUnanswered);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+                const rates = getSectionRates(sectionScores);
+                const purity = getPurityLevel(totalScore);
+                const portrait = getPortrait(totalScore, rates);
+                const recommendation = getRecommendation(rates);
+                const quote = getQuoteForPurity(purity.level);
+
+                // 显示结果区域
+                const resultArea = document.getElementById('result-area');
+                resultArea.style.display = '';
+                resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // 纯度徽章
+                const badge = document.getElementById('purity-badge');
+                badge.textContent = purity.name;
+                badge.className = 'purity-badge ' + purity.cls;
+
+                // 总分
+                document.getElementById('total-score-display').innerHTML = totalScore +
+                    '<span class="denom"> / 105</span>';
+                document.getElementById('score-remark').textContent =
+                    totalScore >= 100 ?
+                    '你几乎满分——但马哲认为真正的检验在实践之中。那5分，留给你用行动去回答。' :
+                    '满分105。多出来的5分，留给实践去检验。';
+
+                // 雷达图
+                drawRadar(rates);
+
+                // 分析内容
+                const analysisDiv = document.getElementById('analysis-content');
+                let html = '';
+
+                // 典型画像
+                if (portrait) {
+                    html += `
+                <div class="analysis-block">
+                  <h4>🎯 典型画像：<span class="portrait-tag">${portrait.name}</span></h4>
+                  <p>${portrait.desc}</p>
+                  <div class="quote">"${portrait.quote}"<span class="attr">${portrait.quoteAttr}</span></div>
+                </div>`;
+                } else {
+                    html += `
+                <div class="analysis-block">
+                  <h4>📊 综合评定</h4>
+                  <p>你的回答呈现出<strong>${purity.name}</strong>的特征。四个板块的倾向各有侧重，整体上对马克思主义哲学框架有不同程度的认同与保留。</p>
+                  <div class="quote">"${quote.text}"<span class="attr">${quote.attr}</span></div>
+                </div>`;
+                }
+
+                // 各板块得分
+                html += `
+              <div class="analysis-block">
+                <h4>📋 各板块得分</h4>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:0.8rem;">`;
+                for (let s = 1; s <= 4; s++) {
+                    const pct = Math.round(rates[s] * 100);
+                    const barWidth = Math.round(rates[s] * 100);
+                    const barColor = ['', '#c0551a', '#b8860b', '#7b2040', '#a83232'][s];
+                    html += `
+                  <div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+                      <span style="font-weight:600;">${sectionShortNames[s]}</span>
+                      <span>${sectionScores[s]}/${sectionMaxScores[s]} (${pct}%)</span>
+                    </div>
+                    <div style="background:#f0e8dc;border-radius:4px;height:8px;overflow:hidden;">
+                      <div style="background:${barColor};height:100%;width:${barWidth}%;border-radius:4px;transition:width 0.5s ease;"></div>
+                    </div>
+                  </div>`;
+                }
+                html += `</div></div>`;
+
+                // 推荐阅读
+                html += `
+              <div class="analysis-block recommend">
+                <h4>📚 推荐阅读</h4>
+                <p><strong>${recommendation.title}</strong>——${recommendation.desc}</p>
+                <p style="font-size:0.75rem;color:#b8a090;margin-top:4px;">（基于你相对薄弱的板块推荐）</p>
+              </div>`;
+
+                analysisDiv.innerHTML = html;
+            }
+
+            function retest() {
+                document.getElementById('result-area').style.display = 'none';
+                document.getElementById('quiz-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // 不清除选项，让用户可以对比修改
+            }
+
+            // ============ Toast ============
+            function showToast(msg) {
+                const toast = document.getElementById('toast');
+                toast.textContent = msg;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2200);
+            }
+
+            // ============ 键盘快捷键 ============
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && e.ctrlKey && document.activeElement === document.body) {
+                    e.preventDefault();
+                    calculateResult();
+                }
+            });
+
+            // ============ 初始化完成 ============
+            console.log('📖 马哲纯度测试已就绪，共 ' + allQuestions.length + ' 道题，满分105分。');
+            console.log('   Ctrl+Enter 可快速提交查看结果。');
+        })();
+    </script>
+</body>
+</html>
